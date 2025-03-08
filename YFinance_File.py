@@ -9,11 +9,17 @@ Original file is located at
 
 import yfinance as yf
 import pandas as pd
+import numpy as np
 
 def get_stock_data(symbol):
-    data = yf.download(symbol)
-    data.columns=data.columns.get_level_values(0)
-    prices = data['Close']
+    
+    if isinstance(symbol, str):
+        data = yf.download(symbol)
+        data.columns = data.columns.get_level_values(0)
+        prices = data['Close']
+    elif isinstance(symbol, pd.DataFrame):
+        prices = symbol['Adj Close']
+
     return prices
 
 def YahooData2returns(YahooData):
